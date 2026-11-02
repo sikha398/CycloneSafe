@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CycloneSafe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>CycloneSafe</h1>
+    <p class="subtitle">YOUR LOCAL WEATHER STATUS</p>
+
+    <!-- Alert Status -->
+    <div class="alert-box">
+        <h2>⚠ ALERT STATUS</h2>
+        <p id="alertMessage">Check latest official bulletin</p>
+        <button onclick="showAlert()">Check Alert</button>
+    </div>
+
+    <!-- Latest Updates -->
+    <div class="menu-box">
+        <button class="menu-button"
+                onclick="showContent('updates')">
+            › Latest Updates
+        </button>
+        <div id="updates" class="content">
+            <p>Check the latest official weather bulletins.</p>
+            <a href="https://mausam.imd.gov.in/"
+               target="_blank" rel="noopener">
+                Visit Official Weather Website
+            </a>
+        </div>
+    </div>
+
+    <!-- Safety Checklist -->
+    <div class="menu-box">
+        <button class="menu-button"
+                onclick="showContent('safety')">
+            › Safety Checklist
+        </button>
+        <div id="safety" class="content">
+            <h3>Cyclone Safety Tips</h3>
+
+            <label>
+                <input type="checkbox">
+                Keep drinking water and dry food.
+            </label><br>
+
+            <label>
+                <input type="checkbox">
+                Charge your mobile phone.
+            </label><br>
+
+            <label>
+                <input type="checkbox">
+                Keep a torch and first-aid kit ready.
+            </label><br>
+
+            <label>
+                <input type="checkbox">
+                Follow official evacuation instructions.
+            </label>
+        </div>
+    </div>
+
+    <!-- Nearby Shelters -->
+    <div class="menu-box">
+        <button class="menu-button"
+                onclick="showContent('shelters')">
+            › Nearby Shelters
+        </button>
+        <div id="shelters" class="content">
+            <p>Search for cyclone shelters in your area.</p>
+
+            <input type="text" id="city"
+                   placeholder="Enter your city">
+
+            <button onclick="findShelters()">
+                Search Shelters
+            </button>
+
+            <p id="shelterResult"></p>
+        </div>
+    </div>
+
+    <!-- Emergency Contacts -->
+    <div class="menu-box">
+        <button class="menu-button"
+                onclick="showContent('contacts')">
+            › Emergency Contacts
+        </button>
+        <div id="contacts" class="content">
+            <p><strong>Emergency Helpline:</strong> 112</p>
+            <p>Contact local authorities during a disaster.</p>
+            <a href="tel:112">📞 Call 112</a>
+        </div>
+    </div>
+
+    <p class="footer">Stay Alert • Stay Safe</p>
+
+</div>
+
+<script>
+    // Open or close a menu
+    function showContent(id) {
+        const selected = document.getElementById(id);
+        const isOpen = selected.style.display === "block";
+
+        // Close all menus first
+        document.querySelectorAll(".content").forEach(function(item) {
+            item.style.display = "none";
+        });
+
+        // Open the selected menu if it was closed
+        if (!isOpen) {
+            selected.style.display = "block";
+        }
+    }
+
+    // Show an alert message
+    function showAlert() {
+        document.getElementById("alertMessage").textContent =
+            "Please check the latest official cyclone bulletin from IMD. This website does not currently receive live alerts.";
+
+        window.open(
+            "https://mausam.imd.gov.in/",
+            "_blank",
+            "noopener"
+        );
+    }
+
+    // Search for a shelter using a map search
+    function findShelters() {
+        const city = document.getElementById("city").value.trim();
+        const result = document.getElementById("shelterResult");
+
+        if (city === "") {
+            result.textContent = "Please enter your city first.";
+            return;
+        }
+
+        result.innerHTML =
+            'Search map results for shelters in ' +
+            escapeHTML(city) + ': ' +
+            '<a href="https://www.google.com/maps/search/cyclone+shelter+' +
+            encodeURIComponent(city) +
+            '" target="_blank" rel="noopener">Open Google Maps</a>';
+    }
+
+    // Safely display user-entered text
+    function escapeHTML(text) {
+        return text.replace(/[&<>"']/g, function(char) {
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[char];
+        });
+    }
+</script>
+
+</body>
+</html>
